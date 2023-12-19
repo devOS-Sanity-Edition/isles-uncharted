@@ -22,6 +22,7 @@ repositories {
 	maven { url = "https://maven.bai.lol" }
 	maven { url = "https://maven.terraformersmc.com/releases/" }
 	maven { url = "https://maven.shedaniel.me/" }
+	maven { url = "https://maven.nucleoid.xyz/" }
 }
 
 dependencies {
@@ -43,6 +44,7 @@ dependencies {
 
 	// dependencies
 	modImplementation("net.fabricmc.fabric-api:fabric-api:$fabric_version")
+	modImplementation("xyz.nucleoid:fantasy:$fantasy_version")
 }
 
 tasks.register("buildOrPublish") {

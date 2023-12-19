@@ -16,6 +16,9 @@
   "entrypoints": {
     "main": [
       "one.devos.nautical.isles_uncharted.IslesUncharted"
+    ],
+    "fabric-datagen": [
+      "one.devos.nautical.isles_uncharted.IslesDatagen"
     ]
   },
   "mixins": [

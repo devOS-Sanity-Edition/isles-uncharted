@@ -77,12 +77,29 @@ loom {
 	runs {
 		gametest {
 			server()
-			name "Test"
+			name "Minecraft Test"
 			vmArg "-Dfabric-api.gametest"
 			vmArg "-Dfabric-api.gametest.report-file=${project.buildDir}/junit.xml"
 			runDir "run/gametest_server"
 		}
+		datagen {
+			client()
+
+			name "Minecraft Data"
+			vmArg "-Dfabric-api.datagen"
+			vmArg "-Dfabric-api.datagen.output-dir=${file("src/generated/resources")}"
+			vmArg "-Dfabric-api.datagen.modid=depths_desolation"
+		}
+
+		configureEach {
+			vmArg("-Dmixin.debug.export=true")
+		}
 	}
+}
+
+sourceSets.main.resources {
+	srcDir("src/generated/resources")
+	exclude("src/generated/resources/.cache")
 }
 
 tasks.withType(JavaCompile).configureEach {

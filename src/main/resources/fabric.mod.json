@@ -1,25 +1,25 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "isles_uncharted",
   "version": "${version}",
-  "name": "Example Mod",
+  "name": "Isles Uncharted",
   "description": "This is an example description! Tell everyone what your mod is about!",
   "authors": [
-    "Tropheus Jay"
+    "devOS: Sanity Edition, Team Nautical"
   ],
   "contact": {
-    "sources": "https://github.com/TropheusJ/fabric-example-mod"
+    "sources": "https://github.com/devOS-Sanity-Edition/isles-uncharted"
   },
   "license": "MIT",
-  "icon": "assets/modid/icon.png",
+  "icon": "assets/isles_uncharted/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
-      "io.github.tropheusj.modid.ExampleMod"
+      "one.devos.nautical.isles_uncharted.IslesUncharted"
     ]
   },
   "mixins": [
-    "modid.mixins.json"
+    "isles_uncharted.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=${loader_version}",

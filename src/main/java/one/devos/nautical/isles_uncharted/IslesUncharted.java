@@ -14,6 +14,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Holder.Reference;
 import net.minecraft.core.HolderLookup.RegistryLookup;
+import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.RegistryAccess.Frozen;
 import net.minecraft.core.registries.Registries;
@@ -21,6 +22,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.KeyDispatchDataCodec;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.biome.Biomes;
@@ -29,13 +31,18 @@ import net.minecraft.world.level.biome.MultiNoiseBiomeSource;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
+import net.minecraft.world.level.levelgen.DensityFunction;
+import net.minecraft.world.level.levelgen.DensityFunctions;
 import net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator;
 import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 import net.minecraft.world.level.levelgen.NoiseRouter;
 import net.minecraft.world.level.levelgen.NoiseRouterData;
 import net.minecraft.world.level.levelgen.NoiseSettings;
+import net.minecraft.world.level.levelgen.Noises;
+import net.minecraft.world.level.levelgen.SurfaceRules;
 import net.minecraft.world.level.levelgen.SurfaceRules.RuleSource;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.synth.NormalNoise;
 import net.minecraft.world.level.portal.PortalInfo;
 import net.minecraft.world.phys.Vec3;
 import one.devos.nautical.isles_uncharted.content.IslesUnchartedEntities;
@@ -108,13 +115,13 @@ public class IslesUncharted implements ModInitializer {
 				BiomeSource biomes = new FixedBiomeSource(biome);
 
 				NoiseGeneratorSettings noiseSettings = new NoiseGeneratorSettings(
-						NoiseSettings.create(-10, 10, 1, 1),
+						NoiseSettings.create(0, 128, 1, 1),
 						Blocks.STONE.defaultBlockState(),
 						Blocks.WATER.defaultBlockState(),
-						null,
-						null,
+						makeSomeNoise(registries),
+						SurfaceRules.state(null),
 						List.of(),
-						0,
+						24,
 						false,
 						false,
 						false,
@@ -132,6 +139,36 @@ public class IslesUncharted implements ModInitializer {
 				return 0;
 			})));
 		});
+	}
+
+	private static NoiseRouter makeSomeNoise(RegistryAccess registries) {
+		DensityFunction zero = DensityFunctions.zero();
+		DensityFunction finalDensity = new DensityFunction.SimpleFunction() {
+			@Override
+			public double compute(FunctionContext context) {
+				double radius = 30;
+				double dist = Math.sqrt(Math.pow(context.blockX(), 2) + Math.pow(context.blockZ(), 2));
+				return -(dist / radius) + 1;
+			}
+
+			@Override
+			public double minValue() {
+				return -1_000_000;
+			}
+
+			@Override
+			public double maxValue() {
+				return 1;
+			}
+
+			@Override
+			public KeyDispatchDataCodec<? extends DensityFunction> codec() {
+				throw new UnsupportedOperationException("please don't call this");
+			}
+		};
+		return new NoiseRouter(
+				zero, zero, zero, zero, zero, zero, zero, zero, zero, zero, zero, finalDensity, zero, zero, zero
+		);
 	}
 
 	public static ResourceLocation id(String path) {

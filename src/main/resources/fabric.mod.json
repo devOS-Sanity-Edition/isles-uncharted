@@ -19,6 +19,9 @@
     ],
     "client": [
       "one.devos.nautical.isles_uncharted.IslesUnchartedClient"
+    ],
+    "fabric-datagen": [
+      "one.devos.nautical.isles_uncharted.IslesDatagen"
     ]
   },
   "mixins": [

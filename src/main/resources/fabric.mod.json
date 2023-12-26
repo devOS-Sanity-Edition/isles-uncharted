@@ -16,6 +16,9 @@
   "entrypoints": {
     "main": [
       "one.devos.nautical.isles_uncharted.IslesUncharted"
+    ],
+    "client": [
+      "one.devos.nautical.isles_uncharted.IslesUnchartedClient"
     ]
   },
   "mixins": [
